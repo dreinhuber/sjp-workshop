@@ -1,27 +1,41 @@
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView
 
 
 from recipes.forms import RecipeForm
 from recipes.models import Recipe
 
 
+class RecipeCreateView(CreateView):
+    model = Recipe
+    template_name = 'recipes/new.html'
+    fields = ["name", "author", "description", "image"]
 
-def create_recipe(request):
-    if request.method == "POST" and RecipeForm:
-        form = RecipeForm(request.POST)
-        if form.is_valid():
-            recipe = form.save()
-            return redirect("recipe_detail", pk=recipe.pk)
-    elif RecipeForm:
-        form = RecipeForm()
-    else:
-        form = None
-    context = {
-        "form": form,
-    }
-    return render(request, "recipes/new.html", context)
+    def get_success_url(self):
+        return reverse('recipe_detail', args=[self.object.pk])
 
+# def create_recipe(request):
+#     if request.method == "POST" and RecipeForm:
+#         form = RecipeForm(request.POST)
+#         if form.is_valid():
+#             recipe = form.save()
+#             return redirect("recipe_detail", pk=recipe.pk)
+#     elif RecipeForm:
+#         form = RecipeForm()
+#     else:
+#         form = None
+#     context = {
+#         "form": form,
+#     }
+#     return render(request, "recipes/new.html", context)
+
+
+class RecipeUpdateView(UpdateView):
+    model = Recipe
+    template_name = 'recipes/edit.html'
+    fields = ["name", "description", "image"]
 
 def change_recipe(request, pk):
     if Recipe and RecipeForm:

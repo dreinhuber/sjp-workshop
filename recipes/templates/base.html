@@ -16,13 +16,13 @@
     <nav>
       <ul>
         <li>
-          <a href="google.com">Scrumptious</a>
+          <a href="{% url 'home' %}">Scrumptious</a>
         </li>
         <li>
           <a href="{% url 'admin:index' %}">Admin</a>
         </li>
         <li>
-          <a href="google.com">Write a recipe</a>
+          <a href="{% url 'create_recipe' %}">Write a recipe</a>
         </li>
       </ul>
     </nav>
